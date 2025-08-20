@@ -16,16 +16,14 @@
 //     () => import('../components/crisp')
 //   )
 
-
 //   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
 
 //   useEffect(() => {
 //     const customerId = localStorage.getItem("customertoken");
 //     if(customerId){
 //       setIsLoggedIn(true);
 //     }
-   
+
 //   }, []);
 //   return (
 //     <div className={styles.container}>
@@ -50,7 +48,7 @@
 //         <a className={styles.logoa}  href={CURRENT_URL}> <img className='logomain' src="https://tsm.spagram.com/api/images/logo2.png" /> </a>
 //         {/* <a className={styles.logoa}  href={CURRENT_URL}> <img className='logomain' src="images/logo2.png" /> </a> */}
 //         {home ? (
-//           <>            
+//           <>
 //             <ul className='menu'>
 //                 <li> <Link href='/'> Therapists </Link> </li>
 //                 <li> <Link href='/model-registration'> Therapist Login/Register </Link> </li>
@@ -76,37 +74,37 @@
 //         )}
 //       </header>
 //       <main>{children}
-      
+
 //       {!home && (
 //         <div className={styles.backToHome}>
 //           <Link href="/">← Back to home</Link>
 //         </div>
 //       )}
 //       </main>
-      
+
 //       <div className='footer'>  &copy; 2024 Tri State Massage LLC. All rights reserved! </div>
 //     </div>
 //   )
 // }
 
-import Head from 'next/head';
-import Link from 'next/link';
-import styles from './layout.module.css';
-import { useState, useEffect } from 'react';
-import { CURRENT_URL } from '../components/config';
-import dynamic from 'next/dynamic';
-import LoginModal from '../components/LoginModal';
+import Head from "next/head";
+import Link from "next/link";
+import styles from "./layout.module.css";
+import { useState, useEffect } from "react";
+import { CURRENT_URL } from "../components/config";
+import dynamic from "next/dynamic";
+import LoginModal from "../components/LoginModal";
 
-
-const name = 'Massage at Home';
-export const siteTitle = 'Spagram';
+const name = "Massage at Home";
+export const siteTitle = "Spagram";
 
 export default function Layout({ children, home }) {
-  const CrispWithNoSSR = dynamic(() => import('../components/crisp'));
+  const CrispWithNoSSR = dynamic(() => import("../components/crisp"));
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [user, setUser] = useState("");
 
   useEffect(() => {
     const customerId = localStorage.getItem("customertoken");
@@ -129,7 +127,11 @@ export default function Layout({ children, home }) {
       <header className={styles.header}>
         <div className={styles.left}>
           <a href={CURRENT_URL} className={styles.logoContainer}>
-            <img className={styles.logo} src="https://tsm.spagram.com/api/images/logo2.png" alt="Logo" />
+            <img
+              className={styles.logo}
+              src="https://tsm.spagram.com/api/images/logo2.png"
+              alt="Logo"
+            />
             <span className={styles.brand}>Spagram</span>
           </a>
         </div>
@@ -139,7 +141,9 @@ export default function Layout({ children, home }) {
           <Link href="/services">Services</Link>
         </nav>
 
-        <div className={styles.menuIcon} onClick={() => setShowDropdown(prev => !prev)}>
+        <div
+          className={styles.menuIcon}
+          onClick={() => setShowDropdown((prev) => !prev)}>
           <div className={styles.bar}></div>
           <div className={styles.bar}></div>
           <div className={styles.bar}></div>
@@ -147,27 +151,45 @@ export default function Layout({ children, home }) {
 
         {showDropdown && (
           <div className={styles.dropdownMenu}>
-            <div className={styles.dropdownButton} 
-            onClick={() => window.location.href = 'https://www.tristatemassage.com/contact'}
-            >
+            <div
+              className={styles.dropdownButton}
+              onClick={() =>
+                (window.location.href =
+                  "https://www.tristatemassage.com/contact")
+              }>
               Help Center
             </div>
-            
+
             {/* <a href="https://www.tristatemassage.com/contact">Help Center</a> */}
             {/* <Link href="/customer-login">Login / Sign Up</Link> */}
-            <div className={styles.dropdownButton} onClick={() => setShowLoginModal(true)}>
-              Login / Sign Up
+            <div
+              className={styles.dropdownButton}
+              onClick={() => {
+                setUser("model");
+                setShowLoginModal(true);
+              }}>
+              Login / Sign Up (As Model)
+            </div>
+            <div
+              className={styles.dropdownButton}
+              onClick={() => {
+                setUser("client");
+                setShowLoginModal(true);
+              }}>
+              Login / Sign Up (As Client)
             </div>
           </div>
         )}
       </header>
 
       <main>{children}</main>
-      {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
+      {showLoginModal && (
+        <LoginModal onClose={() => setShowLoginModal(false)} user={user} />
+      )}
 
-      <div className="footer">© 2024 Tri State Massage LLC. All rights reserved!</div>
+      <div className="footer">
+        © 2024 Tri State Massage LLC. All rights reserved!
+      </div>
     </div>
   );
 }
-
-
