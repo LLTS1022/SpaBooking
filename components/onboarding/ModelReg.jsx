@@ -1,29 +1,64 @@
 import styles from "../../styles/LoginModal.module.css";
 
-const ClientRegStep1 = ({
+const usPhoneRegex = /^(\+1\s?)?(\d{3}|\(\d{3}\))[-.\s]?\d{3}[-.\s]?\d{4}$/;
+
+const ModelReg = ({
   handleChange,
   setRegType,
-  validateStep1,
+  validateModel,
   formData,
   errors,
-  setStep,
+  handleFinalSubmit,
+  setFormData,
+  error,
+  loading,
 }) => {
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    setFormData((prev) => ({ ...prev, phone: value }));
+  };
   return (
     <>
-      <h2>Log in / sign up as client</h2>
+      <h2> Sign up / Log in as Model</h2>
       <div className={styles.inputGroup}>
-        <label>Country code</label>
+        {/* <label>Country code</label>
         <select defaultValue="+1">
           <option value="+1">United States (+1)</option>
           <option value="+91">India (+91)</option>
-        </select>
+        </select> */}
         <input
-          type="text"
+          type="tel"
           placeholder="Phone number"
           value={formData.phone}
-          onChange={handleChange("phone")}
+          onChange={handlePhoneChange}
+          onBlur={(e) => {
+            if (e.target.value && !usPhoneRegex.test(e.target.value)) {
+              alert("Please enter a valid US phone number");
+            }
+          }}
         />
-        {errors.phone && <p className={"required"}>{errors.phone}</p>}
+        {errors.phone && <p className={"required-date"}>{errors.phone}</p>}
+        <input
+          type="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange("email")}
+        />
+        {errors.email && <p className={"required"}>{errors.email}</p>}
+        <input
+          type="text"
+          placeholder="Full name"
+          value={formData.name}
+          onChange={handleChange("name")}
+        />
+        {errors.name && <p className={"required"}>{errors.name}</p>}
+        <input
+          type="text"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange("password")}
+        />
+        {errors.password && <p className={"required"}>{errors.password}</p>}
       </div>
       <div className="container">
         <p>Already have an account?</p>
@@ -31,27 +66,27 @@ const ClientRegStep1 = ({
           Log In
         </button>
       </div>
+      {error && <p className="required">{error}</p>}
       <button
         className={styles.continueBtn}
         onClick={() => {
-          if (validateStep1()) setStep(2);
+          if (validateModel()) handleFinalSubmit();
         }}>
-        Continue
+        {loading ? "processing..." : "Submit"}
       </button>
-      <p className={styles.privacyText}>
-        We’ll call or text you to confirm your number.{" "}
+      {/* <p className={styles.privacyText}>
+        We’ll call or text you to confirm your number.
         <a href="#">Privacy Policy</a>
       </p>
       <div className={styles.divider}>
         <span>or</span>
-      </div>
+      </div> */}
 
-      <button
+      {/* <button
         className={styles.authBtn}
         onClick={() =>
           (window.location.href = "https://accounts.google.com/o/oauth2/auth")
         }>
-        {/* Google SVG */}
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20">
           <path
             fill="#fbc02d"
@@ -71,8 +106,8 @@ const ClientRegStep1 = ({
           />
         </svg>
         Continue with Google
-      </button>
-
+      </button> */}
+      {/* 
       <button
         className={styles.authBtn}
         onClick={() =>
@@ -112,9 +147,9 @@ const ClientRegStep1 = ({
           />
         </svg>
         Continue with Facebook
-      </button>
+      </button> */}
     </>
   );
 };
 
-export default ClientRegStep1;
+export default ModelReg;
