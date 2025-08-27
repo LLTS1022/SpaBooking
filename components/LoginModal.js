@@ -69,46 +69,27 @@ import { useState } from "react";
 import styles from "../styles/LoginModal.module.css";
 import { BASE_URL } from "../baseurl/Baseurl";
 import axios from "axios";
-import { CURRENT_URL } from "./config";
 import Router from "next/router";
-import ModelRegStep1 from "./onboarding/ModelRegStep1";
-import ModelRegStep2 from "./onboarding/ModelRegStep2";
-import ModelRegStep3 from "./onboarding/ModelRegStep3";
 import ModelLogin from "./onboarding/ModelLogin";
-import ClientRegStep1 from "./onboarding/ClientRegStep1";
-import ClientRegStep2 from "./onboarding/ClientRegStep2";
-import ClientRegStep3 from "./onboarding/ClientRegStep3";
 import ClientLogin from "./onboarding/ClientLogin";
+import ModelReg from "./onboarding/ModelReg";
+import ClientReg from "./onboarding/ClientReg";
 
 export default function LoginModal({ onClose, user }) {
   const [regType, setRegType] = useState("signup");
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    phone: "",
     name: "",
+    phone: "",
     email: "",
-    birthdate: "",
-    address: "",
     password: "",
-    cardname: "",
-    card: "",
-    expiration: "",
-    security_code: "",
-    selected_model: "",
   });
   const [clientFormData, setClientFormData] = useState({
     phone: "",
     name: "",
     email: "",
-    birthdate: "",
-    address: "",
     password: "",
-    cardname: "",
-    card: "",
-    expiration: "",
-    security_code: "",
-    selected_model: "",
   });
   const [errors, setErrors] = useState({});
   const [error, setError] = useState("");
@@ -121,64 +102,27 @@ export default function LoginModal({ onClose, user }) {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  const validateStep1 = () => {
+  const validateModel = () => {
     const newErrors = {};
     if (!formData.phone) newErrors.phone = "required";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-  const validateClientStep1 = () => {
-    const newErrors = {};
-    if (!clientFormData.phone) newErrors.phone = "required";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-  const validateStep2 = () => {
-    const newErrors = {};
     if (!formData.name) newErrors.name = "required";
     if (!formData.email) newErrors.email = "required";
-    if (!formData.birthdate) newErrors.birthdate = "required";
+    if (!formData.password) newErrors.password = "required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
-  const validateClientStep2 = () => {
+  const validateClient = () => {
     const newErrors = {};
+    if (!clientFormData.phone) newErrors.phone = "required";
     if (!clientFormData.name) newErrors.name = "required";
     if (!clientFormData.email) newErrors.email = "required";
-    if (!clientFormData.birthdate) newErrors.birthdate = "required";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-  const validateStep3 = () => {
-    const newErrors = {};
-    if (!formData.address) newErrors.address = "required";
-    if (!formData.password) newErrors.password = "required";
-    if (!formData.cardname) newErrors.cardname = "required";
-    if (!formData.card) newErrors.card = "required";
-    if (!formData.expiration) newErrors.expiration = "required";
-    if (!formData.security_code) newErrors.security_code = "required";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const validateClientStep3 = () => {
-    const newErrors = {};
-    if (!clientFormData.address) newErrors.address = "required";
     if (!clientFormData.password) newErrors.password = "required";
-    if (!clientFormData.cardname) newErrors.cardname = "required";
-    if (!clientFormData.card) newErrors.card = "required";
-    if (!clientFormData.expiration) newErrors.expiration = "required";
-    if (!clientFormData.security_code) newErrors.security_code = "required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
   const handleChange = (field) => (e) => {
     setFormData({ ...formData, [field]: e.target.value });
   };
@@ -192,49 +136,49 @@ export default function LoginModal({ onClose, user }) {
   };
 
   const handleFinalSubmit = async () => {
-    if (user === "model") {
-      console.log("modeldata", formData);
-    } else {
-      console.log("clientdata:", clientFormData);
+    setError("");
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        user === "model"
+          ? `${BASE_URL}cmodel.php'`
+          : `${BASE_URL}register-customer.php'`,
+        user === "model" ? formData : clientFormData
+      );
+      console.log(response);
+      if (response.data.success == "1") {
+      } else {
+        setError(
+          response.data.message ||
+            "Email/Password do not match. Please try again!"
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
-    // try {
-    //   const res = await fetch("https://yourapi/register.php", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify(formData),
-    //   });
-    //   const data = await res.json();
-
-    //   if (data.success === "1") {
-    //     localStorage.setItem("customertoken", data.usertoken);
-    //     alert("Registered successfully!");
-    //     onClose();
-    //   } else {
-    //     alert(data.message);
-    //   }
-    // } catch (err) {
-    //   console.error("Error:", err);
-    // }
   };
   const handleLogin = async (e) => {
-    if (user === "client") {
-      console.log("client login endpoint unavailable");
-      return;
-    }
     e.preventDefault();
     setError("");
     setLoading(true);
     try {
       const response = await axios.post(
-        `${BASE_URL}login-model.php`,
+        user === "model"
+          ? `${BASE_URL}login-model.php`
+          : `${BASE_URL}login-customer.php`,
         loginData
       );
 
       if (response.data.success == "1") {
         const { token } = response.data;
-        localStorage.setItem("token", token);
-        // let orderUrl = CURRENT_URL + "model-backend/orders";
-        Router.push("/model-backend/orders");
+        user === "model"
+          ? localStorage.setItem("token", token)
+          : localStorage.setItem("customertoken", token);
+        user === "model"
+          ? Router.push("/model-backend/orders")
+          : Router.push("/customer-backend");
       } else {
         setError(
           response.data.message ||
@@ -269,16 +213,17 @@ export default function LoginModal({ onClose, user }) {
           </div>
 
           {regType === "signup" ? (
-            step === 1 && (
-              <ModelRegStep1
-                handleChange={handleChange}
-                setRegType={setRegType}
-                validateStep1={validateStep1}
-                formData={formData}
-                errors={errors}
-                setStep={setStep}
-              />
-            )
+            <ModelReg
+              handleChange={handleChange}
+              setRegType={setRegType}
+              validateModel={validateModel}
+              formData={formData}
+              setFormData={setFormData}
+              errors={errors}
+              handleFinalSubmit={handleFinalSubmit}
+              error={error}
+              loading={loading}
+            />
           ) : (
             <ModelLogin
               handleLoginChange={handleLoginChange}
@@ -289,27 +234,6 @@ export default function LoginModal({ onClose, user }) {
               validateLogin={validateLogin}
               setRegType={setRegType}
               loading={loading}
-            />
-          )}
-
-          {step === 2 && (
-            <ModelRegStep2
-              handleChange={handleChange}
-              validateStep2={validateStep2}
-              formData={formData}
-              errors={errors}
-              setStep={setStep}
-            />
-          )}
-
-          {step === 3 && (
-            <ModelRegStep3
-              handleChange={handleChange}
-              validateStep3={validateStep3}
-              handleFinalSubmit={handleFinalSubmit}
-              formData={formData}
-              errors={errors}
-              setStep={setStep}
             />
           )}
         </div>
@@ -332,16 +256,17 @@ export default function LoginModal({ onClose, user }) {
           </div>
 
           {regType === "signup" ? (
-            step === 1 && (
-              <ClientRegStep1
-                handleChange={handleClientChange}
-                setRegType={setRegType}
-                validateStep1={validateClientStep1}
-                formData={clientFormData}
-                errors={errors}
-                setStep={setStep}
-              />
-            )
+            <ClientReg
+              handleChange={handleClientChange}
+              setRegType={setRegType}
+              validateClient={validateClient}
+              formData={clientFormData}
+              errors={errors}
+              setFormData={setClientFormData}
+              handleFinalSubmit={handleFinalSubmit}
+              error={error}
+              loading={loading}
+            />
           ) : (
             <ClientLogin
               handleLoginChange={handleLoginChange}
@@ -352,27 +277,6 @@ export default function LoginModal({ onClose, user }) {
               validateLogin={validateLogin}
               setRegType={setRegType}
               loading={loading}
-            />
-          )}
-
-          {step === 2 && (
-            <ClientRegStep2
-              handleChange={handleClientChange}
-              validateStep2={validateClientStep2}
-              formData={clientFormData}
-              errors={errors}
-              setStep={setStep}
-            />
-          )}
-
-          {step === 3 && (
-            <ClientRegStep3
-              handleChange={handleClientChange}
-              validateStep3={validateClientStep3}
-              handleFinalSubmit={handleFinalSubmit}
-              formData={clientFormData}
-              errors={errors}
-              setStep={setStep}
             />
           )}
         </div>
