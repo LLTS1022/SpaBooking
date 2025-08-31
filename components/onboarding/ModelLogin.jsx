@@ -31,12 +31,18 @@ const ModelLogin = ({
         {errors.password && <p className={"required"}>{errors.password}</p>}
       </div>
       {error && <p className="required">{error}</p>}
-      <div className="container">
+      {/* <div className="container">
         <p>Don't have an account?</p>
         <button className="regBtn" onClick={() => setRegType("signup")}>
           Sign Up
         </button>
-      </div>
+      </div> */}
+            <div className={styles.switchText}>
+  Don’t have an account?{" "}
+  <span className={styles.linkText} onClick={() => setRegType("signup")}>
+    Sign Up
+  </span>
+</div>
       <div className="flex">
         <button
           className={styles.continueBtn}

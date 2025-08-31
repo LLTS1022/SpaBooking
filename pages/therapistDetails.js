@@ -16,6 +16,7 @@ const getDummyAvailability = () => {
 const formatDate = (date) => {
     return date.toLocaleDateString('en-CA'); // YYYY-MM-DD
   };
+  
 
 //   const getDummyAvailability = () => {
 //     return Array.from({ length: 7 }).map((_, i) => {
@@ -42,12 +43,30 @@ export default function TherapistDetails() {
     { name: 'Tyler Mitchell', stars: 4, text: 'Loved the experience. Will book again.' }
   ];
   const [showBookingModal, setShowBookingModal] = useState(false);
+  
 
 
   useEffect(() => {
     const stored = localStorage.getItem('selectedTherapist');
     if (stored) setTherapist(JSON.parse(stored));
   }, []);
+
+  const handleBookNow = () => {
+    if (!callType) {
+      alert("Please select call type (InCall or OutCall).");
+      return;
+    }
+    if (!selectedDate) {
+      alert("Please select a date.");
+      return;
+    }
+    if (!selectedSlot) {
+      alert("Please select a time slot.");
+      return;
+    }
+    // ✅ All good → show booking modal
+    setShowBookingModal(true);
+  };
 
     // Filter past time slots for today
     const isToday = selectedDate === formatDate(new Date());
@@ -144,7 +163,10 @@ export default function TherapistDetails() {
 
 
             {/* <button className={styles.bookButton}>Book Now</button> */}
-            <button className={styles.bookButton} onClick={() => setShowBookingModal(true)}>
+            {/* <button className={styles.bookButton} onClick={() => setShowBookingModal(true)}>
+  Book Now
+</button> */}
+<button className={styles.bookButton} onClick={handleBookNow}>
   Book Now
 </button>
 

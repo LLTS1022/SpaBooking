@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Layout from '../components/layout';
 import styles from '../styles/Home.module.css';
 import Ethnicities from "../components/data/ethnicities.js";
+import services from '../components/data/services';
 
 export default function Home() {
   const [therapists, setTherapists] = useState([]);
@@ -70,7 +71,8 @@ export default function Home() {
             >
               <option value="">Location</option>
               <option value="newyork">New York</option>
-              <option value="la">Los Angeles</option>
+              <option value="newjersey">New Jersey</option>
+              <option value="connecticut">Connecticut</option>
             </select>
 
             <select
@@ -82,6 +84,7 @@ export default function Home() {
               <option value="">Gender</option>
               <option value="female">Female</option>
               <option value="male">Male</option>
+              <option value="trans">Trans</option> 
             </select>
 
             <select
@@ -110,8 +113,11 @@ export default function Home() {
               onChange={handleInputChange}
             >
               <option value="">Age</option>
-              <option value="20-25">20-25</option>
-              <option value="26-30">26-30</option>
+              <option value="18-19">18-19</option>
+              <option value="20-30">20-30</option>
+              <option value="30-40">30-40</option>
+              <option value="40-50">40-50</option>
+              <option value="60+">60+</option>
             </select>
 
             <select
@@ -121,8 +127,13 @@ export default function Home() {
               onChange={handleInputChange}
             >
               <option value="">Service Type</option>
-              <option value="spa">Spa</option>
-              <option value="massage">Massage</option>
+              {/* <option value="spa">Spa</option>
+              <option value="massage">Massage</option> */}
+              {services.map((service) => (
+                <option key={service.id} value={service.id}>
+                  {service.name}
+                </option>
+              ))}
             </select>
 
             <button className={styles.applyButton} onClick={applyFilters}>Apply Filters</button>

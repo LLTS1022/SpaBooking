@@ -84,12 +84,24 @@ export default function LoginModal({ onClose, user }) {
     phone: "",
     email: "",
     password: "",
+    // address: "",
+    // selected_model: "",
+    // cardname: "",
+    // card: "",
+    // expiration: "",
+    // security_code: ""
   });
   const [clientFormData, setClientFormData] = useState({
     phone: "",
     name: "",
     email: "",
     password: "",
+    // address: "",
+    // selected_model: "",
+    // cardname: "",
+    // card: "",
+    // expiration: "",
+    // security_code: ""
   });
   const [errors, setErrors] = useState({});
   const [error, setError] = useState("");
@@ -139,14 +151,40 @@ export default function LoginModal({ onClose, user }) {
     setError("");
     setLoading(true);
     try {
+      const payload =
+      user === "model"
+        ? formData
+        : clientFormData;
+
+        console.log("Payload", payload);
+
       const response = await axios.post(
         user === "model"
-          ? `${BASE_URL}create-model.php`
+          ? `${BASE_URL}cmodel.php`
           : `${BASE_URL}register-customer.php`,
-        user === "model" ? formData : clientFormData
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
       console.log(response);
       if (response.data.success == "1") {
+        const { token, name } = response.data;
+
+        if (user === "model") {
+          localStorage.setItem("token", token);
+          localStorage.setItem("modelName", name || formData.name);
+          window.location.reload();
+          Router.push("/model-backend/orders");
+        } else {
+          localStorage.setItem("customertoken", token);
+          localStorage.setItem("customerName", name || clientFormData.name);
+          //Router.push("/"); 
+          onClose();
+          window.location.reload();
+        }
       } else {
         setError(
           response.data.message ||
@@ -172,20 +210,19 @@ export default function LoginModal({ onClose, user }) {
       );
 
       if (response.data.success == "1") {
-        const { token } = response.data;
-        user === "model"
-          ? localStorage.setItem("token", token)
-          : localStorage.setItem("customertoken", token);
-        user === "model"
-          ? Router.push("/model-backend/orders")
-          : Router.push("/customer-backend");
+        const { token, name } = response.data;
+      if (user === "model") {
+        localStorage.setItem("token", token);
+        localStorage.setItem("modelName", name || loginData.email);
+        onClose();
+        Router.push("/model-backend/orders");
       } else {
-        setError(
-          response.data.message ||
-            "Email/Password do not match. Please try again!"
-        );
+        localStorage.setItem("customertoken", token);
+        localStorage.setItem("customerName", name || loginData.email);
+        onClose();
+        window.location.reload(); // redirect home
       }
-    } catch (error) {
+    }} catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
