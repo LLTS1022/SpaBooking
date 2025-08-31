@@ -239,7 +239,8 @@ export default function LoginModal({ onClose, user }) {
               width="24"
               height="24"
               fill="none"
-              viewBox="0 0 24 24">
+              viewBox="0 0 24 24"
+            >
               <path
                 stroke="#333"
                 strokeWidth="2"
@@ -282,7 +283,8 @@ export default function LoginModal({ onClose, user }) {
               width="24"
               height="24"
               fill="none"
-              viewBox="0 0 24 24">
+              viewBox="0 0 24 24"
+            >
               <path
                 stroke="#333"
                 strokeWidth="2"
