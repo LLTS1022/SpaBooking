@@ -141,8 +141,8 @@ export default function LoginModal({ onClose, user }) {
     try {
       const response = await axios.post(
         user === "model"
-          ? `${BASE_URL}cmodel.php'`
-          : `${BASE_URL}register-customer.php'`,
+          ? `${BASE_URL}cmodel.php`
+          : `${BASE_URL}register-customer.php`,
         user === "model" ? formData : clientFormData
       );
       console.log(response);
@@ -202,7 +202,8 @@ export default function LoginModal({ onClose, user }) {
               width="24"
               height="24"
               fill="none"
-              viewBox="0 0 24 24">
+              viewBox="0 0 24 24"
+            >
               <path
                 stroke="#333"
                 strokeWidth="2"
@@ -245,7 +246,8 @@ export default function LoginModal({ onClose, user }) {
               width="24"
               height="24"
               fill="none"
-              viewBox="0 0 24 24">
+              viewBox="0 0 24 24"
+            >
               <path
                 stroke="#333"
                 strokeWidth="2"
