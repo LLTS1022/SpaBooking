@@ -60,12 +60,18 @@ const ModelReg = ({
         />
         {errors.password && <p className={"required"}>{errors.password}</p>}
       </div>
-      <div className="container">
+      {/* <div className="container">
         <p>Already have an account?</p>
         <button className="regBtn" onClick={() => setRegType("login")}>
           Log In
         </button>
-      </div>
+      </div> */}
+            <div className={styles.switchText}>
+  Already have an account?{" "}
+  <span className={styles.linkText} onClick={() => setRegType("login")}>
+    Log In
+  </span>
+</div>
       {error && <p className="required">{error}</p>}
       <button
         className={styles.continueBtn}
