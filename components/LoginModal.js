@@ -141,7 +141,7 @@ export default function LoginModal({ onClose, user }) {
     try {
       const response = await axios.post(
         user === "model"
-          ? `${BASE_URL}cmodel.php`
+          ? `${BASE_URL}create-model.php`
           : `${BASE_URL}register-customer.php`,
         user === "model" ? formData : clientFormData
       );
