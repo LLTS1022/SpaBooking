@@ -1,3 +1,14 @@
+:root {
+  --accent: 255, 99, 132; /* pink ring */
+  --bg: 250, 249, 250;
+  --text: 30, 33, 36;
+  --muted: 125, 125, 140;
+  --card: 255, 255, 255;
+  --sidebar-bg: 20, 28, 36; /* dark sidebar like Skyline */
+  --sidebar-border: 255, 255, 255, .06;
+  --radius: 16px;
+}
+
 html,
 body {
   padding: 0;
@@ -930,4 +941,28 @@ select {
   display: flex;
   gap: 20px;
   align-items: self-end;
+}
+
+/* for admin-backend/layout.js*/
+:root{
+  /* Rose accent (soft, not neon) */
+  --accent: 255, 96, 128;       /* rgb */
+  --bg: 255, 252, 253;          /* page background */
+  --text: 34, 34, 38;           /* main text */
+  --muted: 132, 132, 145;       /* muted labels */
+  --card: 255, 255, 255;        /* cards & surfaces */
+
+  /* make sidebar LIGHT like your screenshot */
+  --sidebar-bg: 255, 255, 255;
+  --sidebar-border: 255, 96, 128, .14;  /* subtle pink edge */
+
+  --radius: 18px;
+}
+
+/* optional: faint rosy wash across the page */
+body{
+  background:
+    radial-gradient(60rem 30rem at 50% -10%, rgba(var(--accent), .03), transparent 60%),
+    rgb(var(--bg));
+  color: rgb(var(--text));
 }
