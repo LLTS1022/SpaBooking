@@ -27,8 +27,6 @@ const Home = () => {
       <Head>
         <title>{siteTitle}</title>
       </Head>
-
-      <h2>Customer Dashboard</h2>
     </Layout>
   );
 };
