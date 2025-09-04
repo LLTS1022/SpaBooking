@@ -1,93 +1,190 @@
-.profileEdit{
+/* --- Quick Links (hidden on the page; you’re using sidebar instead) --- */
+.quickLinks {
+  display: none;            /* hide the in-page buttons */
+  margin: 16px 0 24px;
+}
+
+.quickLinks ul {
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.quickLinks li { display: inline-block; }
+
+.quickLinks li a {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #ff4fa3;
+  color: #ffffff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  line-height: 1;
+  transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+}
+
+.quickLinks li a:hover,
+.quickLinks li a:focus-visible {
+  background-color: #e13d91;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.quickLinks li a:active { transform: translateY(0); }
+
+/* ---------------- Existing styles (kept) ---------------- */
+
+.profileEdit {}
+
+.profileEdit ul,
+.quickLinks ul { padding-left: 0; }
+
+.profileEdit ul li { display: inline-block; }
+.profileEdit ul li img { width: 100px; }
+
+.quickLinks ul li { display: inline-block; margin-right: 30px; }
+
+.profileEdit ul li:first-child { width: 100px; }
+.availBox { display: flex; align-items: flex-start; }
+.availList { display: flex; align-items: flex-start; justify-content: space-around; border-bottom: 1px solid #ccc; }
+.timeList { list-style: none; margin: 10px 30px; }
+.availBox input { width: 200px; }
+.timeBox2 { margin-left: 20px; margin-right: 20px; }
+.save { margin-top: 30px; padding: 8px 20px; }
+
+.table {
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.row { display: table-row; }
+
+.header { font-weight: bold; }
+
+.cell {
+  float: left;
+  padding: 8px;
+  border: 1px solid black;
+  width: 150px;
+}
+
+/* --- Sidebar: pink with white links --- */
+.adminMenu {
+background-color: #ff4fa3;   /* Vibrant pink */
+  margin-right: 40px;
+  min-width: 170px;
+  padding: 20px 14px;
+  height: 100%;
+  border-right: 1px solid #e13d91; /* subtle separation */
+
+
+
+
+  /* 
+    background-color: #ff4fa3;    
+  margin-right: 40px;
+  min-width: 170px;
+  
+  */
 
 }
 
-.profileEdit ul, .quickLinks ul{ padding-left: 0; }
-.profileEdit ul li{ display: inline-block }
-.profileEdit ul li img{ width: 100px; }
+.adminMenu ul { padding-left: 30px; padding-right: 30px; }
 
-.quickLinks ul li { display: inline-block; margin-right: 30px; }
-.quickLinks ul li a{ padding: 10px 25px; background-color: #f6b1d6; }
+.adminMenu a {
+ 
+  color: #fff; /* White text on pink */
+  display: block;
+  margin-bottom: 15px;
+  font-weight: 600;
+  padding: 10px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+ 
+ /* color: #ffffff;
+  display: block;
+  margin-bottom: 15px;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 10px 12px;
+  transition: background-color 0.2s ease, transform 0.1s ease;*/
+ 
+  color: #ffffff;
+  display: block;
+  margin-bottom: 15px;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 10px 12px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
 
-.profileEdit ul li:first-child{ width: 100px; }
-.availBox{ display: flex; align-items: flex-start; }
-.availList{ display: flex; align-items: flex-start; justify-content:space-around; border-bottom: 1px solid #ccc; }
-.timeList{ list-style: none; margin: 10px 30px; }
-.availBox input{ width: 200px;}
-.timeBox2{ margin-left: 20px; margin-right: 20px; }
-.save{ margin-top: 30px; padding: 8px 20px; }
+.adminMenu a:hover {
+ background-color: #e13d91; /* Slightly darker pink on hover */
+  transform: translateX(2px);
 
-
-
-.table {
-    display: table;
-    border-collapse: collapse;
-    width: 100%;
-  }
+  /* 
+  background-color: #e13d91;    
+  transform: translateX(2px);
+  */
   
-  .row {
-    display: table-row;
-  }
-  
-  .header {
-    font-weight: bold;
-  }
-  
-  .cell {
-    float: left;
-    padding: 8px;
-    border: 1px solid black;
-    width: 150px;
-  }
-  
-  .adminMenu{ background-color: #4b0176; margin-right: 40px; min-width: 170px; }
-  .adminMenu ul{ padding-left: 30px; padding-right: 30px; }
-  .adminMenu a{ color: #ffffff; display: block; margin-bottom: 15px; }
-  .servicesBack{ display: block; }
-  .servicesBack li{ margin: 3px 10px; background-color: rgb(250 242 255); padding: 2px 10px; display: inline-block; }
-  .servicesBack li input{ display: inline-block; }
-  .servicesBack li label{ display: inline-block; font-weight: 400;  }
-  .primary_area{ display: block;}
-  .primary_area li{ display: block !important;}
-  .primary_area li:first-child{ width: 100% !important;}
-  .lebeltop{ display: flex;}
+}
 
-  .unavailable{  padding: 5px; background-color: antiquewhite; display: flex; }
-  .unavailForm{  background-color: antiquewhite; ; padding: 20px; }
-  .unavailable label{ margin-top: 10px; }
-  .daily{background: #81c4ff;
-    padding: 20px;
-    margin-top: 20px;
-  }
-  .daily p{ display: flex; gap: 10px; }
-  .sometimes{ background: #b1f4de;
-    margin-top: 30px;
-    padding: 20px;
-  }
-.everydayStart{ width: 100px; }
-.weeklysavebtn{
+.servicesBack { display: block; }
+.servicesBack li { margin: 3px 10px; background-color: rgb(250 242 255); padding: 2px 10px; display: inline-block; }
+.servicesBack li input { display: inline-block; }
+.servicesBack li label { display: inline-block; font-weight: 400; }
+
+.primary_area { display: block; }
+.primary_area li { display: block !important; }
+.primary_area li:first-child { width: 100% !important; }
+.lebeltop { display: flex; }
+
+.unavailable { padding: 5px; background-color: antiquewhite; display: flex; }
+.unavailForm { background-color: antiquewhite; padding: 20px; }
+.unavailable label { margin-top: 10px; }
+
+.daily {
+  background: #81c4ff;
+  padding: 20px;
+  margin-top: 20px;
+}
+.daily p { display: flex; gap: 10px; }
+
+.sometimes {
+  background: #b1f4de;
+  margin-top: 30px;
+  padding: 20px;
+}
+
+.everydayStart { width: 100px; }
+
+.weeklysavebtn {
   width: 160px !important;
   text-align: center;
   margin: auto;
   padding: 14px 20px !important;
   background-color: #F02698 !important;
 }
-.message{ text-align: center;}
 
+.message { text-align: center; }
 
-
-  @media only screen and (max-width: 1000px) {
-
-    .adminMenu{ width: 100%; }
-    .availBox input{ width: 130px; }
-    .adminMenu ul{ padding-left: 5px; padding-right: 5px; }
-    .adminMenu a{ display: inline-block; margin: 10px 13px; }
-    .availList{padding-left: 0; }
-    .timeList{margin-left: 0; margin-right: 0; font-size: 14px; }
-    .availList_header .timeList{ margin-left: -120px; }
-    .availList_header .timeList{ font-size: 18px;}
-    .timeBox2{margin-left: 3px; margin-right: 10px; }
-
-
-
-  }
+@media only screen and (max-width: 1000px) {
+  .adminMenu { width: 100%; }
+  .availBox input { width: 130px; }
+  .adminMenu ul { padding-left: 5px; padding-right: 5px; }
+  .adminMenu a { display: inline-block; margin: 10px 13px; }
+  .availList { padding-left: 0; }
+  .timeList { margin-left: 0; margin-right: 0; font-size: 14px; }
+  .availList_header .timeList { margin-left: -120px; }
+  .availList_header .timeList { font-size: 18px; }
+  .timeBox2 { margin-left: 3px; margin-right: 10px; }
+}

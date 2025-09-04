@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import styles from "./layout.module.css";
 import utilStyles from "../../styles/utils.module.css";
 
 export const siteTitle = "Customer Backend";
@@ -11,7 +12,7 @@ export default function Layout({ children, home }) {
   const isActive = (href) => router.pathname === href;
 
   return (
-    <div className="dashboard-root">
+   <div className={styles.containerAdmin}>
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <meta name="description" content="Customer dashboard" />
@@ -46,9 +47,7 @@ export default function Layout({ children, home }) {
           <div className="actions">
             <div className="search">
               <input type="search" placeholder="Search" aria-label="Search" />
-              <button className="filterBtn" aria-label="Filters">
-                ⋯
-              </button>
+              <button className="filterBtn" aria-label="Filters">⋯</button>
             </div>
           </div>
         </div>
@@ -56,18 +55,18 @@ export default function Layout({ children, home }) {
 
       {/* Main two-column layout */}
       <main className="main-admin-layout">
-        <aside className="admin-menu">
-          <div className="sideLogo">
+        {/* Pink gradient sidebar */}
+        <aside className="adminMenu">
+          <ul className="navList">
             <Image
               priority
               src="/images/logo.png"
-              height={28}
-              width={110}
-              alt="Massage at Home"
+              className={utilStyles.borderCircle}
+              height={36}
+              width={120}
+              alt="TRISTATE Massage & Spa"
             />
-          </div>
 
-          <ul className="navList">
             <li>
               <Link
                 href="/customer-backend/"
@@ -76,6 +75,7 @@ export default function Layout({ children, home }) {
                 Dashboard
               </Link>
             </li>
+
             <li>
               <Link
                 href="/customer-backend/orders"
@@ -84,16 +84,16 @@ export default function Layout({ children, home }) {
                 Orders
               </Link>
             </li>
+
             <li>
               <Link
                 href="/customer-backend/profile"
-                className={
-                  isActive("/customer-backend/profile") ? "active" : ""
-                }
+                className={isActive("/customer-backend/profile") ? "active" : ""}
               >
                 Profile Info
               </Link>
             </li>
+
             <li>
               <Link
                 href="/customer-backend/review"
@@ -102,6 +102,7 @@ export default function Layout({ children, home }) {
                 Review
               </Link>
             </li>
+
             <li>
               <Link href="/logout" className="logoutLink">
                 Logout
@@ -110,9 +111,8 @@ export default function Layout({ children, home }) {
           </ul>
         </aside>
 
-        <section className="contentWrap">
-          <div className="contentArea">{children}</div>
-        </section>
+        {/* Scrollable content */}
+        <section className="contentArea">{children}</section>
       </main>
 
       {!home && (
@@ -121,188 +121,135 @@ export default function Layout({ children, home }) {
         </div>
       )}
 
+      {/* Theme + layout styles (merged) */}
       <style jsx>{`
         :root {
-          --bg-pink: #fff6fb; /* page background */
-          --sidebar-contrast: #ffe3ee; /* soft pink panel */
-          --sidebar-accent: #ff4d6b; /* accents / logout */
-          --accent: #a18cd1; /* active link */
-          --ink: #1e293b;
+          --pink-600: #ff4fa3;
+          --pink-700: #e13d91;
+          --pink-50: #ffe6f2;
+          --ink: #0f172a;
           --muted: #64748b;
+          --border: #f3d0e1;
+          --white: #ffffff;
+
+          /* from admin-backend-design */
+          --bg-pink: #fff6fb;
+          --sidebar-contrast: #ffe3ee;
+          --sidebar-accent: #ff4d6b;
+          --accent: #a18cd1;
           --header-h: 64px;
         }
 
-        html,
-        body,
-        #__next,
-        .dashboard-root {
+        html, body, #__next {
           height: 100%;
         }
         body {
           margin: 0;
-        }
-
-        .dashboard-root {
-          min-height: 100vh;
-          width: 100vw;
-          background: var(--bg-pink);
+          background: var(--pink-50);
           color: var(--ink);
-          font: 15px/1.45 Inter, ui-sans-serif, system-ui, -apple-system,
-            Segoe UI, Roboto, Arial;
+          font: 14px/1.45 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
         }
 
-        /* Header */
+        /* Topbar */
         .topbar {
           position: sticky;
           top: 0;
-          z-index: 10;
+          z-index: 20;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 10px 32px;
-          background: #fff;
-          border-bottom: 1px solid #f4a6c3;
+          padding: 12px 22px;
+          background: var(--white);
+          border-bottom: 1px solid var(--border);
+          backdrop-filter: saturate(180%) blur(6px);
           height: var(--header-h);
           box-shadow: 0 4px 12px -3px #f8bacf22;
         }
-        .brandCrumbs {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-        }
-        .logoTopbar {
-          display: none;
-        }
-        .crumbs {
-          font-size: 13px;
-          white-space: nowrap;
-        }
-        .muted {
-          color: var(--muted);
-        }
-        .sep {
-          margin: 0 6px;
-          color: #fbb6ce;
-        }
-        .strong {
-          font-weight: 600;
-        }
+        .brandCrumbs { display: flex; align-items: center; gap: 16px; }
+        .logoTopbar { display: inline-flex; }
 
-        .actions {
-          display: flex;
-          align-items: center;
-          gap: 14px;
-        }
+        .crumbs { font-size: 13px; white-space: nowrap; }
+        .muted { color: var(--muted); }
+        .sep { margin: 0 6px; color: #cbd5e1; }
+        .strong { font-weight: 700; letter-spacing: 0.2px; }
+
+        .actions { display: flex; align-items: center; gap: 14px; }
         .search {
-          display: flex;
-          gap: 8px;
-          background: var(--bg-pink);
+          display: flex; gap: 8px;
+          background: #faf5f9;
           padding: 8px 12px;
-          border-radius: 14px;
-          box-shadow: 0 2px 8px -2px #fd6595aa;
+          border-radius: 12px;
+          border: 1px solid #f8d3e6;
         }
-        .search input {
-          border: 0;
-          outline: 0;
-          background: transparent;
-          width: 230px;
-        }
-        .filterBtn {
-          border: 0;
-          background: transparent;
-          font-size: 18px;
-          cursor: pointer;
-          color: var(--sidebar-accent);
-        }
+        .search input { border: 0; outline: 0; background: transparent; width: 260px; }
+        .filterBtn { border: 0; background: transparent; font-size: 18px; cursor: pointer; color: var(--sidebar-accent); }
 
-        /* Main layout */
+        /* Grid */
         .main-admin-layout {
           display: grid;
-          grid-template-columns: 270px 1fr;
+          grid-template-columns: 260px minmax(0, 1fr);
           height: calc(100vh - var(--header-h));
+          overflow: hidden;
+          gap: 24px;
+          padding: 20px;
         }
 
         /* Sidebar */
-        .admin-menu {
-          background: linear-gradient(
-            135deg,
-            var(--sidebar-contrast) 82%,
-            #ffd8e6 100%
-          );
-          box-shadow: 4px 0 16px -8px #f57ca8aa;
-          padding: 28px 18px 26px;
-          display: flex;
-          flex-direction: column;
-          min-height: 0;
-          border-right: none;
+        .adminMenu {
+          background: linear-gradient(180deg, var(--pink-600) 0%, var(--pink-700) 100%);
+          border: 1px solid var(--border);
+          border-radius: 14px;
+          padding: 18px 14px;
+          height: 100%;
+          overflow-y: auto;
+          box-shadow: 0 6px 16px rgba(225, 61, 145, 0.18);
         }
-        .sideLogo {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 8px 0 16px;
-          margin-bottom: 12px;
-          border-bottom: 1px solid #ffd2e4;
-        }
-        .navList {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
+        .navList { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
         .navList :global(a) {
           display: block;
-          background: transparent;
-          padding: 13px 18px;
-          border-radius: 14px;
-          font-size: 16px;
-          color: var(--ink);
-          font-weight: 500;
-          transition: 0.22s all cubic-bezier(0.45, 0.07, 0.52, 1.14);
-          box-shadow: 0 2px 8px rgba(248, 186, 207, 0.04);
+          padding: 12px 14px;
+          border-radius: 12px;
+          color: var(--white);
           text-decoration: none;
+          font-weight: 600;
+          letter-spacing: 0.2px;
+          transition: transform .12s ease, background-color .2s ease, box-shadow .2s ease;
         }
-        .navList :global(a:hover),
+        .navList :global(a:hover) {
+          transform: translateX(2px);
+          background: rgba(255, 255, 255, 0.12);
+          box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+        }
+        /* Active state using router */
         .navList :global(a.active) {
-          background: var(--accent);
-          color: #fff;
-          transform: scale(1.04) translateX(5px);
-          box-shadow: 0 4px 20px -4px #a18cd130;
+          background: var(--white);
+          color: var(--pink-600);
+          box-shadow: 0 2px 8px rgba(255,255,255,.35), inset 0 0 0 1px #ffd4ea;
         }
         .logoutLink {
-          margin-top: 14px;
-          padding: 13px 18px;
-          display: block;
-          font-size: 15px;
+          color: var(--white);
           font-weight: 700;
-          border-radius: 14px;
-          color: var(--sidebar-accent);
-          background: #ffe0e6;
-          transition: background 0.22s;
+          text-decoration: none;
+          opacity: 0.92;
         }
-        .logoutLink:hover {
-          background: #ffb3c6;
-          color: #c0395f;
-        }
+        .logoutLink:hover { opacity: 1; }
 
-        /* Content wrapper gives contrast+round corner against pink sidebar */
-        .contentWrap {
-          background: transparent;
-          padding: 28px 32px;
-        }
+        /* Content */
         .contentArea {
           height: 100%;
           overflow: auto;
-          padding: 32px 38px;
-          background: #ffffff;
-          border-radius: 24px;
-          box-shadow: 0 10px 40px -12px rgba(255, 77, 107, 0.28);
+          padding: 24px;
+          background: var(--pink-50);
+          border: 1px solid var(--border);
+          border-radius: 14px;
+          box-shadow: 0 6px 16px rgba(255, 79, 163, 0.08) inset;
         }
 
-        .backToHome {
-          margin: 3rem 0 0;
+        /* Responsive tweaks */
+        @media (max-width: 900px) {
+          .main-admin-layout { grid-template-columns: 1fr; height: auto; }
+          .adminMenu { height: auto; }
+          .search input { width: 180px; }
         }
       `}</style>
     </div>

@@ -23,10 +23,12 @@ const Home = () => {
   //   }
 
   return (
-    /* */ <Layout home>
+    <Layout home>
       <Head>
         <title>{siteTitle}</title>
       </Head>
+
+      <h2>Customer Dashboard</h2>
     </Layout>
   );
 };
