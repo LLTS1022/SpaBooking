@@ -73,7 +73,7 @@ export default function AdminLayout({
   }, [searchTerm]);
 
   return (
-    <div className={`${styles.app} ${darkMode ? styles.dark : ""}`}>
+    <div className={`${styles.containerAdmin} ${darkMode ? styles.dark : ""}`}>
       <Head>
         <title>{title} • Admin</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
