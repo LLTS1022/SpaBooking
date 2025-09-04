@@ -29,6 +29,19 @@ const Home = () => {
       </Head>
 
       <h2> Customer Dashboard </h2>
+      <div className={modelCss.quickLinks}>
+        <ul>
+          <li>
+            <a href="/customer-backend/orders"> Orders </a>
+          </li>
+          <li>
+            <a href="/customer-backend/profile"> Profile </a>
+          </li>
+          <li>
+            <a href="#"> Review </a>
+          </li>
+        </ul>
+      </div>
     </Layout>
   );
 };
