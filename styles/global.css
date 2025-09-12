@@ -6,6 +6,8 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   line-height: 1.6;
   font-size: 18px;
+  /* background-color: #fafafa; */
+  background-color: #fff5f8;
 }
 
 main {
@@ -829,6 +831,7 @@ select {
 
   .navIcon {
     visibility: visible;
+    margin-left: -10px;
   }
 
   .navText {
