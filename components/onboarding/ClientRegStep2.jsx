@@ -41,7 +41,8 @@ const ClientRegStep2 = ({
           if (validateStep2()) {
             setStep(3);
           }
-        }}>
+        }}
+      >
         Continue
       </button>
     </div>
