@@ -113,67 +113,6 @@
   width: 150px;
 }
 
-/* --- Sidebar: pink with white links --- */
-.adminMenu {
-  background-color: #ff4fa3; /* Vibrant pink */
-  margin-right: 40px;
-  min-width: 170px;
-  padding: 20px 14px;
-  height: 100%;
-  border-right: 1px solid #e13d91; /* subtle separation */
-
-  /* 
-    background-color: #ff4fa3;    
-  margin-right: 40px;
-  min-width: 170px;
-  
-  */
-}
-
-.adminMenu ul {
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
-.adminMenu a {
-  color: #fff; /* White text on pink */
-  display: block;
-  margin-bottom: 15px;
-  font-weight: 600;
-  padding: 10px 12px;
-  border-radius: 6px;
-  text-decoration: none;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-
-  /* color: #ffffff;
-  display: block;
-  margin-bottom: 15px;
-  text-decoration: none;
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 10px 12px;
-  transition: background-color 0.2s ease, transform 0.1s ease;*/
-
-  color: #ffffff;
-  display: block;
-  margin-bottom: 15px;
-  text-decoration: none;
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 10px 12px;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-}
-
-.adminMenu a:hover {
-  background-color: #e13d91; /* Slightly darker pink on hover */
-  transform: translateX(2px);
-
-  /* 
-  background-color: #e13d91;    
-  transform: translateX(2px);
-  */
-}
-
 .servicesBack {
   display: block;
 }
@@ -298,6 +237,7 @@
   width: 200px !important;
   height: 100vh;
   position: fixed;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 .adminMenu ul {
   padding-left: 30px;
@@ -307,6 +247,17 @@
   color: #333;
   display: block;
   margin-bottom: 15px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.adminMenu a:hover {
+  color: white; /* Slightly darker pink on hover */
+  transform: translateX(2px);
+  padding: 5px;
+
+  /* 
+  background-color: #e13d91;    
+  transform: translateX(2px);
+  */
 }
 .servicesBack {
   display: block;
@@ -385,7 +336,7 @@
 
 @media only screen and (max-width: 1000px) {
   .adminMenu {
-    width: 100%;
+    width: 150px;
   }
   .availBox input {
     width: 130px;
@@ -418,10 +369,10 @@
   }
 }
 
-@media (max-width: 768px) {
+@media only screen and (max-width: 768px) {
   .adminMenu {
     width: 140px !important; /* smaller width for mobile */
-    font-size: 0.85rem; /* reduce text size */
+    font-size: 0.85rem;
   }
 
   .adminMenu a {
@@ -430,7 +381,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media only screen and (max-width: 480px) {
   .adminMenu {
     width: 50px !important; /* extra small for very small screens */
     font-size: 0.75rem;
