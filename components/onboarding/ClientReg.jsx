@@ -1,9 +1,11 @@
-// ClientReg.jsx
 import React, { useState, useMemo } from "react";
 import axios from "axios";
 import styles from "../../styles/LoginModal.module.css";
 
 const usPhoneRegex = /^(\+1\s?)?(\d{3}|\(\d{3}\))[-.\s]?\d{3}[-.\s]?\d{4}$/;
+
+// const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://tsm.spagram.com";
+const API_BASE = "https://tsm.spagram.com";
 
 const ClientReg = ({
   handleChange,
@@ -54,6 +56,7 @@ const ClientReg = ({
     try {
       setSubmitting(true);
 
+      // match msgdb.customers columns
       const payload = {
         name: (formData?.name || "").trim(),
         email: (formData?.email || "").trim(),
@@ -62,13 +65,21 @@ const ClientReg = ({
         address: formData?.address || "",
         city: (formData?.city || "").trim(),
         zip: normalizeZip(formData?.zip || ""),
-        selected_model: formData?.selected_model || "",
-        // server maps this to DB column squre_customer_id
-        square_customer_id: (formData?.square_customer_id || "pending").trim(),
+        current_models: String(
+          formData?.current_models ??
+            formData?.selected_model ??
+            formData?.current_modelid ??
+            ""
+        ),
+        squre_customer_id: String(
+          formData?.squre_customer_id ??
+            formData?.square_customer_id ??
+            "pending"
+        ),
       };
 
       const resp = await axios.post(
-        "https://tsm.spagram.com/api/register-customer.php",
+        `${API_BASE}/api/register-customer.php`,
         payload,
         { headers: { "Content-Type": "application/json" } }
       );
@@ -108,7 +119,7 @@ const ClientReg = ({
           aria-invalid={Boolean(errors?.phone || phoneInvalid)}
         />
         {(errors?.phone || phoneInvalid) && (
-          <p className={"required"}>
+          <p className="required">
             {errors?.phone || "Please enter a valid US phone number"}
           </p>
         )}
@@ -123,7 +134,7 @@ const ClientReg = ({
           onChange={hc("email")}
           aria-invalid={Boolean(errors?.email)}
         />
-        {!!errors?.email && <p className={"required"}>{errors.email}</p>}
+        {!!errors?.email && <p className="required">{errors.email}</p>}
 
         <label htmlFor="name">Full name</label>
         <input
@@ -135,7 +146,7 @@ const ClientReg = ({
           onChange={hc("name")}
           aria-invalid={Boolean(errors?.name)}
         />
-        {!!errors?.name && <p className={"required"}>{errors.name}</p>}
+        {!!errors?.name && <p className="required">{errors.name}</p>}
 
         <label htmlFor="password">Password</label>
         <input
@@ -147,9 +158,8 @@ const ClientReg = ({
           onChange={hc("password")}
           aria-invalid={Boolean(errors?.password)}
         />
-        {!!errors?.password && <p className={"required"}>{errors.password}</p>}
+        {!!errors?.password && <p className="required">{errors.password}</p>}
 
-        {/* Optional address fields */}
         <label htmlFor="address">Address</label>
         <input
           id="address"
