@@ -151,12 +151,9 @@ export default function LoginModal({ onClose, user }) {
     setError("");
     setLoading(true);
     try {
-      const payload =
-      user === "model"
-        ? formData
-        : clientFormData;
+      const payload = user === "model" ? formData : clientFormData;
 
-        console.log("Payload", payload);
+      console.log("Payload", payload);
 
       const response = await axios.post(
         user === "model"
@@ -181,7 +178,7 @@ export default function LoginModal({ onClose, user }) {
         } else {
           localStorage.setItem("customertoken", token);
           localStorage.setItem("customerName", name || clientFormData.name);
-          //Router.push("/"); 
+          //Router.push("/");
           onClose();
           window.location.reload();
         }
@@ -209,21 +206,30 @@ export default function LoginModal({ onClose, user }) {
         loginData
       );
 
-      if (response.data.success == "1") {
+      console.log("Login response:", response.data);
+
+      if (response.data && response.data.success == "1") {
         const { token, name } = response.data;
-      if (user === "model") {
-        localStorage.setItem("token", token);
-        localStorage.setItem("modelName", name || loginData.email);
-        onClose();
-        Router.push("/model-backend/orders");
+        if (user === "model") {
+          localStorage.setItem("token", token);
+          localStorage.setItem("modelName", name || loginData.email);
+          onClose();
+          Router.push("/model-backend/orders");
+        } else {
+          localStorage.setItem("customertoken", token);
+          localStorage.setItem("customerName", name || loginData.email);
+          onClose();
+          window.location.reload(); // redirect home
+        }
       } else {
-        localStorage.setItem("customertoken", token);
-        localStorage.setItem("customerName", name || loginData.email);
-        onClose();
-        window.location.reload(); // redirect home
+        setError(
+          (response.data && response.data.message) ||
+            "Email/Password do not match. Please try again!"
+        );
       }
-    }} catch (error) {
+    } catch (error) {
       console.error(error);
+      setError("An error occurred during login. Please try again.");
     } finally {
       setLoading(false);
     }

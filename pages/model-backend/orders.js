@@ -1,124 +1,123 @@
-import React, { useState, useEffect } from 'react';
-import Head from 'next/head';
-import Layout, { siteTitle } from '../../components/model/layout';
-import modelStyle from '../../styles/model.module.css';
+import React, { useState, useEffect, useCallback } from "react";
+import Head from "next/head";
+import Layout, { siteTitle } from "../../components/model/layout";
+import modelStyle from "../../styles/model.module.css";
 import withAuth from "../../components/admin/withAuth";
-import axios from 'axios';
+import axios from "axios";
 import OrderSingle from "./orderSingle.js";
 
-
 const Orders = () => {
-
-  const [orderData, setOrderData] = useState(null);
-  const [id, setId] = useState(null);
+  const [orderData, setOrderData] = useState([]);
+  const [modelId, setModelId] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const [noOrder, setNoOrder] = useState(false);
-  const [status, setStatus] = useState(false);
+  const [status, setStatus] = useState(""); // "Approved" | "Denied" | ''
 
-  // const rowclass = `${modelStyle.row} ${modelStyle.header}`;
+  // Normalize status updates coming from children
+  const changeOrderStatus = useCallback((nextStatus) => {
+    setStatus(nextStatus === "Approved" ? "Approved" : "Denied");
+  }, []);
 
-  //area, gender, race, height
-
-  const changeOrderStatus = (status) => {
-    if(status == "Approved"){
-      setStatus("Approved");
-      console.log('stats', status);
-    }else{
-      setStatus("Denied");
-      console.log('stats d', status);
-    }
-  }
-
-  useEffect(() => {
-
-    const modelid = localStorage.getItem("token");
+  const fetchOrders = useCallback(async (id, signal) => {
+    if (!id) return;
     setLoading(true);
-    const queryUrl = 'https://tsm.spagram.com/api/getpendingorders.php?modelid=' + modelid;
-    const getData = async () => {
-        try {
-          const response = await axios.get(queryUrl);
-          console.log(' api response', response.data );
-          setOrderData(response.data);
-          response.data.length < 1 ? setNoOrder(true) : '';
-          setLoading(true);
+    setError("");
+    setNoOrder(false);
 
-        } catch (err) {
-          console.log(err)
-          setError(err.message);
-        } finally {
-          setLoading(false);
-        }
-      };
+    try {
+      const url = `https://tsm.spagram.com/api/getpendingorders.php?modelid=${encodeURIComponent(
+        id
+      )}`;
+      const response = await axios.get(url, { signal });
+      const data = Array.isArray(response.data) ? response.data : [];
 
-      // let modid = singleApiUrl.split("=")[1];
+      setOrderData(data);
+      setNoOrder(data.length === 0);
+    } catch (err) {
+      // Axios throws if aborted; ignore abort errors
+      if (axios.isCancel(err) || err?.name === "CanceledError") return;
+      setError(err?.message || "Failed to load orders.");
+      setOrderData([]);
+      setNoOrder(false);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-        getData();
-  //       const availabilityUrl = 'https://tsm.spagram.com/api/availability.php?id=' + singleApiUrl.split("=")[1] + 'date=' + isDateSelected + 'time=' + isTimeSelected;
- 
-  }, [status]);
+  // Read token once on mount
+  useEffect(() => {
+    const token =
+      typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    setModelId(token || null);
+  }, []);
 
-  // if (!orderData || orderData.length === 0) {
-  //   return <div>Loading...</div>; // You can display a loading state while data is being fetched
-  // }
+  // Fetch whenever modelId is set or status toggles (to reflect child actions)
+  useEffect(() => {
+    if (!modelId) return;
+    const controller = new AbortController();
+    fetchOrders(modelId, controller.signal);
+
+    return () => controller.abort();
+  }, [modelId, status, fetchOrders]);
 
   return (
     <Layout orders>
       <Head>
         <title>{siteTitle}</title>
       </Head>
-      
-      <div className='orderlist'>
-      <h2> Your Service Request </h2>
-      <div className='orders'> 
 
-      <div className={modelStyle.table}>
-      <table className='table'>
-        <thead>
-          <tr>
-            <th> Request Time </th>
-            <th> Address </th>
-            <th> Call Type </th>
-            <th> Service Time </th>
-            <th> Status </th>
+      <div className="orderlist">
+        <h2>Your Service Request</h2>
 
-          </tr>
-        </thead>
-      {/* <div className={`$ ${modelStyle.header}`} >
-        <div className={modelStyle.cell}>Request Time </div>
-        <div className={modelStyle.cell}>Address</div>
-        <div className={modelStyle.cell}>Call Type</div>
-        <div className={modelStyle.cell}> Service Time </div>
-        <div className={modelStyle.cell}> Status </div>
-      </div> */}
-      {/* {data.map((item) => (
-        <div className="row" key={item.id}>
-          <div className="cell">{item.name}</div>
-          <div className="cell">{item.age}</div>
-          <div className="cell">{item.location}</div>
-        </div>
-      ))} */}
-      <tbody> 
+        {loading && <p>Loading pending requests…</p>}
 
-       {orderData && orderData.map((order, index) => (
-        // <OrderSingle key={index} {...order} changeOrderStatus={changeOrderStatus} />
-        // <OrderSingle changeOrderStatus={changeOrderStatus} key={index} order={order} />
-        <OrderSingle key={index} changeOrderStatus={changeOrderStatus}  order ={order}  />
-      ))}
-      </tbody>
-      </table>
-    </div>
-    <strong> {noOrder? "You don't have any pending service request" : ''} </strong> 
-     
-      
+        {!loading && error && (
+          <div className={modelStyle.error}>
+            <p>{error}</p>
+            <button
+              className="button"
+              onClick={() => fetchOrders(modelId, undefined)}
+              type="button"
+            >
+              Retry
+            </button>
+          </div>
+        )}
+
+        {!loading && !error && noOrder && (
+          <strong>You don&apos;t have any pending service request.</strong>
+        )}
+
+        {!loading && !error && !noOrder && (
+          <div className="orders">
+            <div className={modelStyle.table}>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Request Time</th>
+                    <th>Address</th>
+                    <th>Call Type</th>
+                    <th>Service Time</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orderData.map((order, index) => (
+                    <OrderSingle
+                      key={order?.id ?? index}
+                      order={order}
+                      changeOrderStatus={changeOrderStatus}
+                    />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </div>
-      
-      </div>
-      
-      
     </Layout>
   );
-}
-
+};
 
 export default withAuth(Orders);
