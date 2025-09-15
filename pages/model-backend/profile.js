@@ -331,78 +331,79 @@ const Profile = () => {
       <h5> Profile Status: {model.status} </h5>
       <h2> {initialMSg} </h2>
       <h2> Personal info </h2>
-
       <section className={modelCss.profileEdit}>
         {!loading ? (
-          <form onSubmit={handleModelUpdate}>
-            <ul>
-              {" "}
-              <li> Profile Url </li>{" "}
-              <li>
-                {" "}
-                <input
-                  type="text"
-                  onChange={handleInputChange}
-                  name="slug"
-                  value={model.slug}></input>{" "}
-              </li>{" "}
-            </ul>
-            <ul>
-              {" "}
-              <li> Name </li>{" "}
-              <li>
-                {" "}
-                <input
-                  type="text"
-                  onChange={handleInputChange}
-                  name="name"
-                  value={model.name}></input>{" "}
-              </li>{" "}
-            </ul>
-            <ul className={modelCss.primary_area}>
-              {" "}
-              <li>
-                {" "}
-                Phone (Please don't add country code and also don't include any
-                whitespace. ){" "}
-              </li>{" "}
-              <li>
-                {" "}
-                <input
-                  type="text"
-                  onChange={handleInputChange}
-                  name="phone"
-                  value={model.phone}></input>{" "}
-              </li>{" "}
-            </ul>
-            <ul>
-              {" "}
-              <li> Email </li>{" "}
-              <li>
-                {" "}
-                <input
-                  type="text"
-                  onChange={handleInputChange}
-                  name="email"
-                  value={model.email}></input>{" "}
-              </li>{" "}
-            </ul>
-            <ul>
-              {" "}
-              <li> Gender </li>{" "}
-              <li>
-                {" "}
-                <select name="gender" onChange={handleInputChange}>
-                  <option value=""> Select</option>
-                  <option selected={"Female" === model.gender}> Female </option>
-                  <option selected={"Male" === model.gender}> Male </option>
-                  <option selected={"Trans" === model.gender}> Trans </option>
-                </select>{" "}
-              </li>{" "}
-            </ul>
+          <form onSubmit={handleModelUpdate} className={modelCss.form}>
+            {/* Profile URL */}
+            <div className={modelCss.formGroup}>
+              <label>Profile URL</label>
+              <input
+                type="text"
+                className={modelCss.input}
+                onChange={handleInputChange}
+                name="slug"
+                value={model.slug}
+              />
+            </div>
 
-            <ul className={modelCss.servicesBack}>
-              <li>Services </li>
+            {/* Name */}
+            <div className={modelCss.formGroup}>
+              <label>Name</label>
+              <input
+                type="text"
+                onChange={handleInputChange}
+                name="name"
+                value={model.name}
+                className={modelCss.input}
+              />
+            </div>
+
+            {/* Phone */}
+            <div className={modelCss.formGroup}>
+              <label>
+                Phone
+                <span className={modelCss.helpText}>
+                  (Don’t add country code, no whitespace)
+                </span>
+              </label>
+              <input
+                type="text"
+                onChange={handleInputChange}
+                name="phone"
+                value={model.phone}
+                className={modelCss.input}
+              />
+            </div>
+
+            {/* Email */}
+            <div>
+              <label>Email</label>
+              <input
+                type="text"
+                onChange={handleInputChange}
+                name="email"
+                value={model.email}
+              />
+            </div>
+
+            {/* Gender */}
+            <div>
+              <label>Gender</label>
+              <select
+                name="gender"
+                value={model.gender}
+                className={modelCss.select}
+                onChange={handleInputChange}>
+                <option value="">Select</option>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+                <option value="Trans">Trans</option>
+              </select>
+            </div>
+
+            {/* Services */}
+            <div className={modelCss.servicesBack}>
+              <label>Services</label>
               {Services.map((service) => (
                 <li key={service.id}>
                   <input
@@ -415,182 +416,173 @@ const Profile = () => {
                   <label htmlFor={service.id}>{service.name}</label>
                 </li>
               ))}
-            </ul>
+            </div>
 
-            <ul className={modelCss.primary_area}>
-              {" "}
-              <li>
-                {" "}
-                <strong> Primary location </strong> (Select only one location){" "}
-                <br />{" "}
-              </li>{" "}
-              <li>
-                {" "}
-                <select
-                  name="primary_area"
-                  multiple
-                  value={model.selectedAreas_primary}
-                  onChange={handleAreaChangePrimary}
-                  style={{ width: "100%", height: "300px" }}>
-                  {areas.map((group) => (
-                    <optgroup key={group.label} label={group.label}>
-                      {group.options.map((item) => (
-                        <option key={item} value={item}>
-                          {item}
-                        </option>
-                      ))}
-                    </optgroup>
-                  ))}
-                </select>{" "}
-              </li>{" "}
-            </ul>
+            {/* Primary Location */}
+            <div className={modelCss.primary_area}>
+              <label>
+                <strong>Primary location</strong> (Select only one location)
+              </label>
+              <select
+                name="primary_area"
+                multiple
+                value={model.selectedAreas_primary}
+                className={modelCss.select}
+                onChange={handleAreaChangePrimary}
+                style={{ width: "100%", height: "300px" }}>
+                {areas.map((group) => (
+                  <optgroup key={group.label} label={group.label}>
+                    {group.options.map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+            </div>
 
-            <ul className={modelCss.primary_area}>
-              {" "}
-              <li>
-                {" "}
-                <strong> Secondary location </strong> <br />
-                (press and hold ctrl/command to select multiple location, Press
-                and hold 'Shift' and select start to end to select range of
-                items){" "}
-              </li>{" "}
-              <li>
-                {" "}
-                <select
-                  name="area"
-                  multiple
-                  value={model.selectedAreas}
-                  onChange={handleAreaChange}
-                  style={{ width: "100%", height: "300px" }}>
-                  {areas.map((group) => (
-                    <optgroup key={group.label} label={group.label}>
-                      {group.options.map((item) => (
-                        <option key={item} value={item}>
-                          {item}
-                        </option>
-                      ))}
-                    </optgroup>
-                  ))}
-                  {console.log("aresss", model.selectedAreas)}
-                </select>{" "}
-              </li>{" "}
-            </ul>
+            {/* Secondary Location */}
+            <div className={modelCss.primary_area}>
+              <label>
+                <strong>Secondary location</strong> <br />
+                (press and hold ctrl/command to select multiple locations, Press
+                and hold 'Shift' to select a range)
+              </label>
+              <select
+                name="area"
+                multiple
+                value={model.selectedAreas}
+                onChange={handleAreaChange}
+                className={modelCss.select}
+                style={{ width: "100%", height: "300px" }}>
+                {areas.map((group) => (
+                  <optgroup key={group.label} label={group.label}>
+                    {group.options.map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+            </div>
 
-            <ul className={modelCss.lebeltop}>
-              {" "}
-              <li> Call Type (hold ctrl to select both)</li>{" "}
-              <li>
-                {" "}
-                <select
-                  name="gender"
-                  multiple
-                  value={model.location_type}
-                  onChange={handleLocationTypeChange}>
-                  <option value=""> Select</option>
-                  <option selected={"inCall" === model.gender}> inCall </option>
-                  <option selected={"outCall" === model.gender}>
-                    {" "}
-                    outCall{" "}
+            {/* Call Type */}
+            <div className={modelCss.lebeltop}>
+              <label>Call Type (hold ctrl to select both)</label>
+              <select
+                name="location_type"
+                multiple
+                value={model.location_type}
+                className={modelCss.select}
+                onChange={handleLocationTypeChange}>
+                <option value="">Select</option>
+                <option value="inCall">inCall</option>
+                <option value="outCall">outCall</option>
+              </select>
+            </div>
+
+            {/* inCall Location */}
+            <div>
+              <label>inCall Location</label>
+              <input
+                type="text"
+                onChange={handleInputChange}
+                name="incall_location"
+                value={model.incall_location}
+              />
+            </div>
+
+            {/* Rate */}
+            <div>
+              <label>Rate per hour($)</label>
+              <input
+                type="text"
+                onChange={handleInputChange}
+                name="price"
+                value={model.price}
+              />
+            </div>
+
+            {/* Ethnicity */}
+            <div>
+              <label>Ethnicity</label>
+              <select
+                name="ethnicity"
+                value={model.ethnicity}
+                className={modelCss.select}
+                onChange={handleInputChange}>
+                <option value="">Select</option>
+                {Ethnicities.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
                   </option>
-                </select>{" "}
-              </li>{" "}
-            </ul>
+                ))}
+              </select>
+            </div>
 
-            <ul>
-              {" "}
-              <li> inCall Location </li>{" "}
-              <li>
-                <input
-                  type="text"
-                  onChange={handleInputChange}
-                  name="incall_location"
-                  value={model.incall_location}></input>
-              </li>
-            </ul>
+            {/* Age */}
+            <div>
+              <label>Age</label>
+              <input
+                type="text"
+                onChange={handleInputChange}
+                name="age"
+                value={model.age}
+              />
+            </div>
 
-            <ul>
-              <li> Rate per hour($) </li>{" "}
-              <li>
-                <input
-                  type="text"
-                  onChange={handleInputChange}
-                  name="price"
-                  value={model.price}></input>
-              </li>
-            </ul>
+            {/* Height */}
+            <div>
+              <label>Height (in feet, ie 5.7)</label>
+              <input
+                type="text"
+                onChange={handleInputChange}
+                name="height"
+                value={model.height}
+              />
+            </div>
 
-            <ul>
-              {" "}
-              <li> Ethnicity </li>{" "}
-              <li>
-                {" "}
-                <select name="ethnicity" onChange={handleInputChange}>
-                  <option value=""> Select</option>
-                  {Ethnicities.map((item) => (
-                    <option selected={item === model.ethnicity}>
-                      {" "}
-                      {item}{" "}
-                    </option>
-                  ))}
-                </select>{" "}
-              </li>{" "}
-            </ul>
+            {/* Color */}
+            <div>
+              <label>Color</label>
+              <select
+                name="color"
+                value={model.color}
+                className={modelCss.select}
+                onChange={handleInputChange}>
+                <option value="">Select</option>
+                <option value="White">White</option>
+                <option value="Black">Black</option>
+              </select>
+            </div>
+            {/* /*
+            {model.servicePrices.split(",").map((spString) => (
+              <ServicePricesUI {...spString} />
+            ))}
+            */
+            /* {console.log("sd", typeof servp)} */
+            /* {showPrices(servPri)}
+             */}
 
-            <ul>
-              {" "}
-              <li> Age </li>{" "}
-              <li>
-                <input
-                  type="text"
-                  onChange={handleInputChange}
-                  name="age"
-                  value={model.age}></input>
-              </li>
-            </ul>
+            {/* About */}
+            <div className={modelCss.lebeltop}>
+              <label>About</label>
+              <textarea
+                onChange={handleInputChange}
+                className={modelCss.textarea}
+                rows="4"
+                cols="50"
+                name="about"
+                value={model.about}></textarea>
+            </div>
 
-            <ul>
-              {" "}
-              <li> Height (in feet, ie 5.7) </li>{" "}
-              <li>
-                <input
-                  type="text"
-                  onChange={handleInputChange}
-                  name="height"
-                  value={model.height}></input>
-              </li>{" "}
-            </ul>
-            <ul>
-              {" "}
-              <li> Color </li>{" "}
-              <li>
-                <select name="color" onChange={handleInputChange}>
-                  <option> Color </option>
-                  <option selected={"White" === model.color}> White </option>
-                  <option selected={"Black" === model.color}> Black </option>
-                </select>
-              </li>{" "}
-            </ul>
-
-            <ul className={modelCss.lebeltop}>
-              {" "}
-              <li> About </li>{" "}
-              <li>
-                {" "}
-                <textarea
-                  onChange={handleInputChange}
-                  rows="4"
-                  cols="50"
-                  name="about"
-                  value={model.about}></textarea>{" "}
-              </li>{" "}
-            </ul>
-
-            <ul>
-              {" "}
-              <li> Profile Picture </li>{" "}
-              <li>
-                {" "}
-                <img src={model.picture_url} />{" "}
+            {/* Profile Picture */}
+            <div className={modelCss.formGroup}>
+              <label>Profile Picture</label>
+              <div className={modelCss.imageUpload}>
+                <img src={model.picture_url} alt="Profile" />
                 <input
                   type="file"
                   id="picture_url"
@@ -598,56 +590,22 @@ const Profile = () => {
                   name="picture_url"
                   accept="image/*"
                 />
-              </li>
-            </ul>
-            <ul>
-              {" "}
-              <li> Upload gallery Pictures </li>{" "}
-              <li>
-                {" "}
-                <GalleryImages gs={model && model.picture_urls} />{" "}
-                <input
-                  type="file"
-                  id="picture_urls"
-                  onChange={handleMultiFileUpload}
-                  name="picture_urls"
-                  accept="image/*"
-                  multiple
-                />{" "}
-              </li>{" "}
-            </ul>
-
-            {/* {model.servicePrices.split(",").map((spString) => ( <ServicePricesUI {...spString}  /> ) )} */}
-            {/* {console.log('sd', typeof servp)} */}
-            {/* {showPrices(servPri) } */}
-
-            {servPri &&
-              servPri.map((sps, index) => (
-                <ul key={sps.id}>
-                  <li> {sps.name} </li>{" "}
-                  <li>
-                    {" "}
-                    ${" "}
-                    <input
-                      type="text"
-                      onChange={(event) =>
-                        handleServChange(index, "Price", event.target.value)
-                      }
-                      value={sps.Price}></input>{" "}
-                  </li>
-                </ul>
-              ))}
-
-            <div class="submitbox">
-              <button className="button" type="submit">
-                Update Profile{" "}
-              </button>
-              {loading ? <img width="30px" src="images/loading.gif" /> : " "}
+              </div>
             </div>
-            <p className="message"> {message} </p>
+
+            {/* Submit */}
+            <div className={modelCss.submitBox}>
+              <button className={modelCss.submitBtn} type="submit">
+                Update Profile
+              </button>
+              {loading && (
+                <img width="30px" src="images/loading.gif" alt="loading" />
+              )}
+            </div>
+            <p className={modelCss.message}>{message}</p>
           </form>
         ) : (
-          <h2> Updating.... </h2>
+          <h2>Updating…</h2>
         )}
       </section>
     </Layout>
