@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "./layout.module.css";
+import { usePathname } from "next/navigation";
 import utilStyles from "../../styles/utils.module.css";
 import modelStyle from "../../styles/model.module.css";
 import Link from "next/link";
@@ -10,6 +11,35 @@ const name = "Massage at Home";
 export const siteTitle = "Muew Muew site title";
 
 export default function Layout({ children, home, availability }) {
+  const pathname = usePathname();
+
+  const navItems = [
+    {
+      href: "/model-backend/orders",
+      label: "Orders",
+      icon: BookOpenCheck,
+    },
+    {
+      href: "/model-backend/profile",
+      label: "Profile",
+      icon: User,
+    },
+    {
+      href: "/model-backend/availability",
+      label: "Availability",
+      icon: CalendarDays,
+    },
+    {
+      href: "/support",
+      label: "Contact",
+      icon: Mail,
+    },
+    {
+      href: "/logout",
+      label: "Logout",
+      icon: LogOut,
+    },
+  ];
   return (
     <div
       className={
@@ -42,7 +72,7 @@ export default function Layout({ children, home, availability }) {
               </li>
               <li>
                 {" "}
-                <Link href="/admin-backend/logout"> Logout </Link>{" "}
+                <Link href="/admin-backend/logout"> Logout </Link>
               </li>
             </ul>
             <h1 className={utilStyles.heading2Xl}>{name}</h1>
@@ -84,26 +114,24 @@ export default function Layout({ children, home, availability }) {
                 alt=""
               />
             </Link>
-            <Link href="/model-backend/orders">
-              <p className="navText">Orders</p>
-              <BookOpenCheck className="navIcon" size={20} />
-            </Link>
-            <Link href="/model-backend/profile">
-              <p className="navText">Profile Info</p>
-              <User className="navIcon" size={20} />
-            </Link>
-            <Link href="/model-backend/availability">
-              <p className="navText">Availability</p>
-              <CalendarDays className="navIcon" size={20} />
-            </Link>
-            <Link href="/support">
-              <p className="navText">Contact</p>
-              <Mail className="navIcon" size={20} />
-            </Link>
-            <Link href="/logout">
-              <p className="navText">Logout</p>
-              <LogOut className="navIcon" size={20} />
-            </Link>
+            {navItems.map(({ href, label, icon: Icon }) => (
+              <li>
+                <Link
+                  key={href}
+                  href={href}
+                  className={`${modelStyle.navLink} ${
+                    pathname === href ? modelStyle.active : ""
+                  } navText`}>
+                  <Icon
+                    className={` ${
+                      pathname === href ? modelStyle.active : ""
+                    } navIcon`}
+                    size={20}
+                  />
+                  <span>{label}</span>
+                </Link>
+              </li>
+            ))}
           </ul>
         </section>
         <section className="dash">{children}</section>
