@@ -1,16 +1,8 @@
-// components/layout.js
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import dynamic from "next/dynamic";
 import styles from "./layout.module.css";
-
-// ✅ Client-only widget (safe on SSR)
-const CrispWithNoSSR = dynamic(
-  () => import("../crisp").then((m) => m.default || m),
-  { ssr: false }
-);
 
 export default function AdminLayout({
   title = "Dashboard",
@@ -45,43 +37,47 @@ export default function AdminLayout({
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
-  // Dummy search with debounce
+  // Toggle dark mode class on body
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add(styles.darkMode);
+    } else {
+      document.body.classList.remove(styles.darkMode);
+    }
+  }, [darkMode]);
+
+  // Dummy search function with debounce
   useEffect(() => {
     if (searchTerm.trim() === "") {
       setSearchResults([]);
       return;
     }
-    const t = setTimeout(() => {
+    const timeoutId = setTimeout(() => {
+      // Simulate search results
       setSearchResults(
         [
           { id: 1, label: "Dashboard" },
           { id: 2, label: "Users" },
           { id: 3, label: "Settings" },
-        ].filter((i) =>
-          i.label.toLowerCase().includes(searchTerm.toLowerCase())
+        ].filter((item) =>
+          item.label.toLowerCase().includes(searchTerm.toLowerCase())
         )
       );
     }, 300);
-    return () => clearTimeout(t);
+    return () => clearTimeout(timeoutId);
   }, [searchTerm]);
 
   return (
-    <div
-      className={[
-        styles.containerAdmin,
-        darkMode ? styles.dark : styles.light,
-      ].join(" ")}
-    >
+    <div className={`${styles.containerAdmin} ${darkMode ? styles.dark : ""}`}>
       <Head>
         <title>{title} • Admin</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-
-      {/* Optional client-only widget */}
-      <CrispWithNoSSR />
 
       {/* Topbar */}
       <div className={styles.topbar}>
@@ -89,11 +85,9 @@ export default function AdminLayout({
           className={styles.hamburger}
           aria-label="Toggle sidebar"
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          type="button"
         >
           ☰
         </button>
-
         <nav className={styles.crumbs}>
           {breadcrumbs.length ? (
             breadcrumbs.map((c, i) => (
@@ -139,7 +133,6 @@ export default function AdminLayout({
           aria-label="Notifications"
           onClick={() => setNotificationsOpen(!notificationsOpen)}
           ref={notificationsRef}
-          type="button"
         >
           🔔
           {notificationsOpen && (
@@ -154,15 +147,12 @@ export default function AdminLayout({
           aria-label="Account"
           onClick={() => setUserMenuOpen(!userMenuOpen)}
           ref={userMenuRef}
-          type="button"
         >
           me
           {userMenuOpen && (
             <div className={styles.dropdown}>
               <Link href="/profile">Profile</Link>
-              <button onClick={() => alert("Logging out...")} type="button">
-                Logout
-              </button>
+              <button onClick={() => alert("Logging out...")}>Logout</button>
             </div>
           )}
         </button>
@@ -171,7 +161,6 @@ export default function AdminLayout({
           className={styles.themeToggle}
           aria-label="Toggle dark mode"
           onClick={() => setDarkMode(!darkMode)}
-          type="button"
         >
           {darkMode ? "🌙" : "☀️"}
         </button>
@@ -214,12 +203,6 @@ export default function AdminLayout({
             </li>
             <li>
               <Link href="#">Charts</Link>
-            </li>
-            <li>
-              <Link href="/admin-backend/therapists">Therapists</Link>
-            </li>
-            <li>
-              <Link href="/admin-backend/users">Users</Link>
             </li>
             <li>
               <Link href="#">Tables</Link>

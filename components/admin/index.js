@@ -1,7 +1,4 @@
-import AdminLayout from "./layout";
-import styles from "./layout.module.css";
-import services from "../data/services";
-
+import AdminLayout from "@/components/admin/AdminLayout";
 export default function AdminHome() {
   return (
     <AdminLayout title="Dashboard">
@@ -12,7 +9,7 @@ export default function AdminHome() {
           <div className={styles.cardValue}>370</div>
         </div>
         <div className={styles.card}>
-          <p className={styles.cardTitle}>Shop Services</p>
+          <p className={styles.cardTitle}>Shop Items</p>
           <div className={styles.cardValue}>342</div>
         </div>
         <div className={styles.card}>
@@ -58,7 +55,7 @@ export default function AdminHome() {
           </div>
         </div>
         <div className={styles.widget}>
-          <strong>Top 5 Services</strong>
+          <strong>Top 5 Products</strong>
           <div
             style={{
               height: 260,
@@ -79,39 +76,13 @@ export default function AdminHome() {
               marginTop: 6,
             }}
           >
-            <span className={styles.badge}>Swedish massage</span>
-            <span className={styles.badge}>Deep tissue massage</span>
-            <span className={styles.badge}>Sports massage</span>
-            <span className={styles.badge}>Reflexology</span>
-            <span className={styles.badge}>Acupressure</span>
+            <span className={styles.badge}>Paleo Bars</span>
+            <span className={styles.badge}>Bow Ties</span>
+            <span className={styles.badge}>Pocket Squares</span>
+            <span className={styles.badge}>Wood Sunglasses</span>
+            <span className={styles.badge}>Leggings</span>
           </div>
         </div>
-      </section>
-
-      {/* Services Management */}
-      <section className={styles.tableWrap}>
-        <h3>Manage Services</h3>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {services.map((service) => (
-              <tr key={service.id}>
-                <td>{service.id}</td>
-                <td>{service.name}</td>
-                <td>
-                  <button>Edit</button>
-                  <button>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </section>
 
       {/* Table */}
