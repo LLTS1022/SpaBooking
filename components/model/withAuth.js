@@ -6,7 +6,7 @@ const withAuth = (WrappedComponent) => {
     useEffect(() => {
       const token = localStorage.getItem("token");
       if (!token) {
-        Router.push("/admin-backend/login");
+        Router.push("/admin");
       }
     }, []);
 

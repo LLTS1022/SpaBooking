@@ -1,4 +1,3 @@
-
 // import Head from "next/head";
 // import Link from "next/link";
 // import styles from "./layout.module.css";
@@ -116,8 +115,6 @@
 //   </div>
 // )}
 
-
-        
 //       </header>
 
 //       <main>{children}</main>
@@ -126,7 +123,7 @@
 //       )}
 
 //       <div className="footer">
-//         © 2024 Tri State Massage LLC. All rights reserved!
+//         © 2025 Tri State Massage LLC. All rights reserved!
 //       </div>
 //     </div>
 //   );
@@ -157,8 +154,7 @@ export default function Layout({ children, home }) {
     if (customerId && customerName) {
       setIsLoggedIn(true);
       setUser(customerName || "Client");
-    }
-    else {
+    } else {
       localStorage.removeItem("customertoken");
       localStorage.removeItem("customerName");
     }
@@ -184,7 +180,6 @@ export default function Layout({ children, home }) {
       </Head>
 
       <header className={styles.header}>
-
         <div className={styles.left}>
           <a href={CURRENT_URL} className={styles.logoContainer}>
             <img
@@ -201,7 +196,6 @@ export default function Layout({ children, home }) {
           <Link href="/services">Services</Link>
         </nav>
 
-
         <div
           className={styles.menuIcon}
           onClick={() => setShowDropdown((prev) => !prev)}
@@ -217,10 +211,7 @@ export default function Layout({ children, home }) {
               <>
                 <div
                   className={styles.dropdownButton}
-                  onClick={() =>
-                    (window.location.href =
-                      "https://www.tristatemassage.com/contact")
-                  }
+                  onClick={() => (window.location.href = "/help")}
                 >
                   Help Center
                 </div>
@@ -261,7 +252,7 @@ export default function Layout({ children, home }) {
       )}
 
       <div className="footer">
-        © 2024 Tri State Massage LLC. All rights reserved!
+        © 2025 Tri State Massage LLC. All rights reserved!
       </div>
     </div>
   );

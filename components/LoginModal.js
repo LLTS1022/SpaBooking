@@ -209,7 +209,7 @@ export default function LoginModal({ onClose, user }) {
       console.log("Login response:", response.data);
 
       if (response.data && response.data.success == "1") {
-        const { token, name } = response.data;
+        const { usertoken: token, name } = response.data;
         if (user === "model") {
           localStorage.setItem("token", token);
           localStorage.setItem("modelName", name || loginData.email);
